@@ -1,5 +1,4 @@
 #!/bin/bash
 
-cd /opt/modmail 
-pipenv install
+rm -rf temp/logs
 pipenv run python bot.py
