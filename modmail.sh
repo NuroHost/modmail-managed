@@ -24,17 +24,13 @@ COMMAND_PID=""
 check_status() {
     response=$(curl -s -H "Authorization: Bearer $API_KEY" \
                    -H "Content-Type: application/json" \
-                   "$API_ENDPOINT")    
-    if [ $? -ne 0 ]; then
-        echo "Error: Failed to connect to API"
-        return 1
-    fi
-    
+                   "$API_ENDPOINT")
+
     status=$(echo "$response" | grep -o '"status":"[^"]*"' | cut -d'"' -f4)
-    if [ -z "$status" ]; then
-        status=$(echo "$response" | grep -o '"state":"[^"]*"' | cut -d'"' -f4)
-    fi
+
+    echo "$status"
 }
+
 
 kill_running_command() {
     if [ -n "$COMMAND_PID" ] && kill -0 "$COMMAND_PID" 2>/dev/null; then
