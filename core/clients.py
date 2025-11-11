@@ -1,5 +1,3 @@
-import os
-from dotenv import load_dotenv
 import secrets
 import sys
 from json import JSONDecodeError
@@ -14,7 +12,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo.errors import ConfigurationError
 
 from core.models import InvalidConfigError, getLogger
-load_dotenv()
+
 logger = getLogger(__name__)
 botname = os.getenv("BOT_NAME")
 
@@ -502,9 +500,7 @@ class MongoDBClient(ApiClient):
                     'run "Certificate.command" on MacOS, '
                     'and check certifi is up to date "pip3 install --upgrade certifi".'
                 )
-                mOnGoNaMe = os.getenv("BOT_NAME") 
-                self.db = AsyncIOMotorClient(mongo_uri, tlsAllowInvalidCertificates=True)[mOnGoNaMe]
-
+                self.db = AsyncIOMotorClient(mongo_uri, tlsAllowInvalidCertificates=True).modmail_bot
                 return await self.validate_database_connection(ssl_retry=False)
             if "ServerSelectionTimeoutError" in message:
                 logger.critical(
@@ -596,14 +592,14 @@ class MongoDBClient(ApiClient):
                     "id": str(recipient.id),
                     "name": recipient.name,
                     "discriminator": recipient.discriminator,
-                    "avatar_url": recipient.display_avatar.url,
+                    "avatar_url": recipient.display_avatar.url if recipient.display_avatar else None,
                     "mod": False,
                 },
                 "creator": {
                     "id": str(creator.id),
                     "name": creator.name,
                     "discriminator": creator.discriminator,
-                    "avatar_url": creator.display_avatar.url,
+                    "avatar_url": creator.display_avatar.url if creator.display_avatar else None,
                     "mod": isinstance(creator, Member),
                 },
                 "closer": None,
@@ -665,7 +661,7 @@ class MongoDBClient(ApiClient):
                 "id": str(message.author.id),
                 "name": message.author.name,
                 "discriminator": message.author.discriminator,
-                "avatar_url": message.author.display_avatar.url,
+                "avatar_url": message.author.display_avatar.url if message.author.display_avatar else None,
                 "mod": not isinstance(message.channel, DMChannel),
             },
             "content": message.content,
@@ -715,7 +711,9 @@ class MongoDBClient(ApiClient):
                     "id": str(message.author.id),
                     "name": message.author.name,
                     "discriminator": message.author.discriminator,
-                    "avatar_url": message.author.display_avatar.url,
+                    "avatar_url": (
+                        message.author.display_avatar.url if message.author.display_avatar else None
+                    ),
                 },
                 "message": message.content,
                 "message_id": str(message_id),
