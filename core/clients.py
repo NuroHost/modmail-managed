@@ -12,7 +12,9 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo.errors import ConfigurationError
 
 from core.models import InvalidConfigError, getLogger
-
+import os
+from dotenv import load_dotenv
+load_dotenv()
 logger = getLogger(__name__)
 botname = os.getenv("BOT_NAME")
 
