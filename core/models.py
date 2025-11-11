@@ -1,1326 +1,489 @@
-{
-  "twitch_url": {
-    "default": "`https://www.twitch.tv/discordmodmail/`",
-    "description": "This channel dictates the linked Twitch channel when the activity is set to \"Streaming\".",
-    "examples": [
-      "`{prefix}config set twitch_url https://www.twitch.tv/yourchannelname/`"
-    ],
-    "notes": [
-      "This has no effect when the activity is not set to \"Streaming\".",
-      "See also: `{prefix}help activity`."
-    ]
-  },
-  "main_category_id": {
-    "default": "`Modmail` (created with `{prefix}setup`)",
-    "description": "This is the category where all new threads will be created.\n\nTo change the Modmail category, you will need to find the [category’s ID](https://support.discordapp.com/hc/en-us/articles/206346498).",
-    "examples": [
-      "`{prefix}config set main_category_id 9234932582312` (`9234932582312` is the category ID)"
-    ],
-    "notes": [
-      "If the Modmail category ended up being non-existent/invalid, Modmail will break. To fix this, run `{prefix}setup` again or set `main_category_id` to a valid category.",
-      "When the Modmail category is full, new channels will be created in the fallback category.",
-      "See also: `fallback_category_id`."
-    ]
-  },
-  "fallback_category_id": {
-    "default": "`Fallback Modmail` (created when the main category is full)",
-    "description": "This is the category that will hold the threads when the main category is full.\n\nTo change the Fallback category, you will need to find the [category’s ID](https://support.discordapp.com/hc/en-us/articles/206346498).",
-    "examples": [
-      "`{prefix}config set fallback_category_id 9234932582312` (`9234932582312` is the category ID)"
-    ],
-    "notes": [
-      "If the Fallback category ended up being non-existent/invalid, Modmail will create a new one. To fix this, set `fallback_category_id` to a valid category.",
-      "See also: `main_category_id`."
-    ]
-  },
-  "prefix": {
-    "default": "`?`",
-    "description": "The prefix of the bot.",
-    "examples": [
-      "`{prefix}prefix !`",
-      "`{prefix}config set prefix !`"
-    ],
-    "notes": [
-      "If you forgot the bot prefix, Modmail will always respond to its mention (ping)."
-    ]
-  },
-  "mention": {
-    "default": "@here",
-    "description": "This is the message above user information for when a new thread is created in the channel.",
-    "examples": [
-      "`{prefix}config set mention Yo~ Here's a new thread for ya!`",
-      "`{prefix}mention Yo~ Here's a new thread for ya!`"
-    ],
-    "notes": [
-      "To disable mention, use command `{prefix}mention disable`.",
-      "See also: `{prefix}help mention`."
-    ]
-  },
-  "main_color": {
-    "default": "Discord Blurple [#7289DA](https://placehold.it/100/7289da?text=+)",
-    "description": "This is the main color for Modmail (help/about/ping embed messages, subscribe, move, etc.).",
-    "examples": [
-      "`{prefix}config set main_color olive green`",
-      "`{prefix}config set main_color 12de3a`",
-      "`{prefix}config set main_color #12de3a`",
-      "`{prefix}config set main_color fff`"
-    ],
-    "notes": [
-      "Available color names can be found on [Taki's Blog](https://taaku18.github.io/modmail/colors/).",
-      "See also: `error_color`, `mod_color`, `recipient_color`."
-    ],
-    "thumbnail": "https://placehold.it/100/7289da?text=+"
-  },
-  "error_color": {
-    "default": "Discord Red [#E74C3C](https://placehold.it/100/e74c3c?text=+)",
-    "description": "This is the color for Modmail when anything goes wrong, unsuccessful commands, or a stern warning.",
-    "examples": [
-      "`{prefix}config set error_color ocean blue`",
-      "`{prefix}config set error_color ff1242`",
-      "`{prefix}config set error_color #ff1242`",
-      "`{prefix}config set error_color fa1`"
-    ],
-    "notes": [
-      "Available color names can be found on [Taki's Blog](https://taaku18.github.io/modmail/colors/).",
-      "See also: `main_color`, `mod_color`, `recipient_color`."
-    ],
-    "thumbnail": "https://placehold.it/100/e74c3c?text=+"
-  },
-  "user_typing": {
-    "default": "Enabled",
-    "description": "When this is set to `yes`, whenever the recipient user starts to type in their DM channel, the moderator will see “{bot.user.display_name} is typing…” in the thread channel.",
-    "examples": [
-      "`{prefix}config set user_typing yes`",
-      "`{prefix}config set user_typing no`"
-    ],
-    "notes": [
-      "See also: `mod_typing`."
-    ]
-  },
-  "use_user_id_channel_name": {
-    "default": "No",
-    "description": "When this is set to `yes`, new thread channels will be named with the recipient's ID instead of the recipient's name.",
-    "examples": [
-      "`{prefix}config set use_user_id_channel_name yes`",
-      "`{prefix}config set use_user_id_channel_name no`"
-    ],
-    "notes": [
-      "This config is suitable for servers in Server Discovery to comply with channel name restrictions.",
-      "This cannot be applied with `use_timestamp_channel_name`, `use_random_channel_name` or `use_nickname_channel_name`.",
-      "See also: `use_timestamp_channel_name`, `use_nickname_channel_name`, `use_random_channel_name`."
-    ]
-  },
-  "use_timestamp_channel_name": {
-    "default": "No",
-    "description": "When this is set to `yes`, new thread channels will be named with the recipient's account creation date instead of the recipient's name.",
-    "examples": [
-      "`{prefix}config set use_timestamp_channel_name yes`",
-      "`{prefix}config set use_timestamp_channel_name no`"
-    ],
-    "notes": [
-      "This config is suitable for servers in Server Discovery to comply with channel name restrictions.",
-      "This cannot be applied with `use_user_id_channel_name`, `use_random_channel_name` or `use_nickname_channel_name`.",
-      "See also: `use_user_id_channel_name`, `use_nickname_channel_name`, `use_random_channel_name`."
-    ]
-  },
-  "use_nickname_channel_name": {
-    "default": "No",
-    "description": "When this is set to `yes`, new thread channels will be named with the recipient's nickname instead of the recipient's name.",
-    "examples": [
-      "`{prefix}config set use_nickname_channel_name yes`",
-      "`{prefix}config set use_nickname_channel_name no`"
-    ],
-    "notes": [
-      "This config is NOT suitable for servers in Server Discovery to comply with channel name restrictions.",
-      "This cannot be applied with `use_timestamp_channel_name`, `use_random_channel_name` or `use_user_id_channel_name`.",
-      "See also: `use_timestamp_channel_name`, `use_user_id_channel_name`, `use_random_channel_name`."
-    ]
-  },
-  "use_random_channel_name": {
-    "default": "No",
-    "description": "When this is set to `yes`, new thread channels will be named with random characters tied to their user ID.",
-    "examples": [
-      "`{prefix}config set use_random_channel_name yes`",
-      "`{prefix}config set use_random_channel_name no`"
-    ],
-    "notes": [
-      "This config is suitable for servers in Server Discovery to comply with channel name restrictions.",
-      "This cannot be applied with `use_timestamp_channel_name`, `use_nickname_channel_name`, or `use_user_id_channel_name`.",
-      "See also: `use_timestamp_channel_name`, `use_user_id_channel_name`, `use_nickname_channel_name`."
-    ]
-  },
-  "mod_typing": {
-    "default": "Disabled",
-    "description": "When this is set to `yes`, whenever a moderator starts to type in the thread channel, the recipient user will see \"{bot.user.display_name} is typing…\" in their DM channel.",
-    "examples": [
-      "`{prefix}config set mod_typing yes`",
-      "`{prefix}config set mod_typing no`"
-    ],
-    "notes": [
-      "See also: `mod_typing`."
-    ]
-  },
-  "account_age": {
-    "default": "No age threshold",
-    "description": "The creation date of the recipient user account must be greater than the number of days, hours, minutes or any time-interval specified by this configuration.",
-    "examples": [
-      "`{prefix}config set account_age P12DT3H` (stands for 12 days and 3 hours in [ISO-8601 Duration Format](https://en.wikipedia.org/wiki/ISO_8601#Durations))",
-      "`{prefix}config set account_age 3 days and 5 hours` (accepted readable time)"
-    ],
-    "notes": [
-      "To remove this restriction, do `{prefix}config del account_age`.",
-      "See also: `guild_age`."
-    ]
-  },
-  "guild_age": {
-    "default": "No age threshold",
-    "description": "The join date of the recipient user into this server must be greater than the number of days, hours, minutes or any time-interval specified by this configuration.",
-    "examples": [
-      "`{prefix}config set guild_age P12DT3H` (stands for 12 days and 3 hours in [ISO-8601 Duration Format](https://en.wikipedia.org/wiki/ISO_8601#Durations))",
-      "`{prefix}config set guild_age 3 days and 5 hours` (accepted readable time)"
-    ],
-    "notes": [
-      "To remove this restriction, do `{prefix}config del guild_age`.",
-      "See also: `account_age`."
-    ]
-  },
-  "reply_without_command": {
-    "default": "Disabled",
-    "description": "Setting this configuration will make all non-command messages sent in the thread channel to be forwarded to the recipient without the need of `{prefix}reply`.",
-    "examples": [
-      "`{prefix}config set reply_without_command yes`",
-      "`{prefix}config set reply_without_command no`"
-    ],
-    "notes": [
-      "See also: `anon_reply_without_command`, `plain_reply_without_command`."
-    ]
-  },
-  "anon_reply_without_command": {
-    "default": "Disabled",
-    "description": "Setting this configuration will make all non-command messages sent in the thread channel to be anonymously forwarded to the recipient without the need of `{prefix}reply`.",
-    "examples": [
-      "`{prefix}config set anon_reply_without_command yes`",
-      "`{prefix}config set anon_reply_without_command no`"
-    ],
-    "notes": [
-      "See also: `reply_without_command`, `plain_reply_without_command`."
-    ]
-  },
-  "plain_reply_without_command": {
-    "default": "Disabled",
-    "description": "Setting this configuration will make all non-command messages sent in the thread channel to be forwarded to the recipient in a plain form without the need of `{prefix}reply`.",
-    "examples": [
-      "`{prefix}config set plain_reply_without_command yes`",
-      "`{prefix}config set plain_reply_without_command no`"
-    ],
-    "notes": [
-      "See also: `reply_without_command`, `anon_reply_without_command`."
-    ]
-  },
-  "log_channel_id": {
-    "default": "`#bot-logs` (created with `{prefix}setup`)",
-    "description": "This is the channel where all log messages will be sent (ie. thread close message, update message, etc.).\n\nTo change the log channel, you will need to find the [channel’s ID](https://support.discordapp.com/hc/en-us/articles/206346498). The channel doesn’t necessary have to be under the `main_category`.",
-    "examples": [
-      "`{prefix}config set log_channel_id 9234932582312` (9234932582312 is the channel ID)"
-    ],
-    "notes": [
-      "If the Modmail logging channel ended up being non-existent/invalid, no logs will be sent."
-    ]
-  },
-  "mention_channel_id": {
-    "default": "Log Channel (normally `#bot-logs`)",
-    "description": "This is the channel where bot mentions are sent to.",
-    "examples": [
-      "`{prefix}config set mention_channel_id 9234932582312` (9234932582312 is the channel ID)"
-    ],
-    "notes": [
-      "This has no effect unless `alert_on_mention` is set to yes.",
-      "See also: `log_channel_id`"
-    ]
-  },
-  "update_channel_id": {
-    "default": "Log Channel (normally `#bot-logs`)",
-    "description": "This is the channel where update notifications are sent to.",
-    "examples": [
-      "`{prefix}config set update_channel_id 9234932582312` (9234932582312 is the channel ID)"
-    ],
-    "notes": [
-      "This has no effect unless `disable_autoupdates` is set to no and `update_notifications` is set to yes.",
-      "See also: `log_channel_id`"
-    ]
-  },
-  "update_notifications": {
-    "default": "Yes",
-    "description": "This is the channel where update notifications are sent to.",
-    "examples": [
-      "`{prefix}config set update_notifications no`"
-    ],
-    "notes": [
-      "This has no effect unless `disable_autoupdates` is set to no.",
-      "See also: `update_channel_id`"
-    ]
-  },
-  "sent_emoji": {
-    "default": "✅",
-    "description": "This is the emoji added to the message when when a Modmail action is invoked successfully (ie. DM Modmail, edit message, etc.).",
-    "examples": [
-      "`{prefix}config set sent_emoji ✨`"
-    ],
-    "notes": [
-      "You can disable `sent_emoji` with `{prefix}config set sent_emoji disable`.",
-      "Custom/animated emojis are also supported, however, the emoji must be added to the server.",
-      "See also: `blocked_emoji`."
-    ]
-  },
-  "blocked_emoji": {
-    "default": "🚫",
-    "description": "This is the emoji added to the message when when a Modmail action is invoked unsuccessfully (ie. DM Modmail when blocked, failed to reply, etc.).",
-    "examples": [
-      "`{prefix}config set blocked_emoji 🙅‍`"
-    ],
-    "notes": [
-      "You can disable `blocked_emoji` with `{prefix}config set blocked_emoji disable`.",
-      "Custom/animated emojis are also supported, however, the emoji must be added to the server.",
-      "See also: `sent_emoji`."
-    ]
-  },
-  "close_emoji": {
-    "default": "🔒",
-    "description": "This is the emoji the recipient can click to close a thread themselves. The emoji is automatically added to the `thread_creation_response` embed.",
-    "examples": [
-      "`{prefix}config set close_emoji 👍‍`"
-    ],
-    "notes": [
-      "This will only have an effect when `recipient_thread_close` is enabled.",
-      "See also: `recipient_thread_close`."
-    ]
-  },
-  "recipient_thread_close": {
-    "default": "Disabled",
-    "description": "Setting this configuration will allow recipients to use the `close_emoji` to close the thread themselves.",
-    "examples": [
-      "`{prefix}config set recipient_thread_close yes`",
-      "`{prefix}config set recipient_thread_close no`"
-    ],
-    "notes": [
-      "The close emoji is dictated by the configuration `close_emoji`.",
-      "See also: `close_emoji`."
-    ]
-  },
-  "thread_show_roles": {
-    "default": "Yes",
-    "description": "Shows roles on first message sent in thread channels to mods",
-    "examples":[
-      "`{prefix}config set thread_show_roles no`"
-    ],
-    "notes": [
-      "See also: `thread_show_account_age`, `thread_show_join_age`."
-    ]
-  },
-  "thread_show_account_age": {
-    "default": "Yes",
-    "description": "Shows account age on first message sent in thread channels to mods",
-    "examples":[
-      "`{prefix}config set thread_show_account_age no`"
-    ],
-    "notes": [
-      "See also: `thread_show_roles`, `thread_show_join_age`."
-    ]
-  },
-  "thread_show_join_age": {
-    "default": "Yes",
-    "description": "Shows join age on first message sent in thread channels to mods",
-    "examples":[
-      "`{prefix}config set thread_show_join_age no`"
-    ],
-    "notes": [
-      "See also: `thread_show_account_age`, `thread_show_roles`."
-    ]
-  },
-  "thread_auto_close_silently": {
-    "default": "No",
-    "description": "Setting this configuration will close silently when the thread auto-closes.",
-    "examples": [
-      "`{prefix}config set thread_auto_close_silently yes`",
-      "`{prefix}config set thread_auto_close_silently no`"
-    ],
-    "notes": [
-      "This will only have an effect when `thread_auto_close` is set.",
-      "See also: `thread_auto_close`."
-    ]
-  },
-  "thread_auto_close": {
-    "default": "Never",
-    "description": "Setting this configuration will close threads automatically after the number of days, hours, minutes or any time-interval specified by this configuration.",
-    "examples": [
-      "`{prefix}config set thread_auto_close P12DT3H` (stands for 12 days and 3 hours in [ISO-8601 Duration Format](https://en.wikipedia.org/wiki/ISO_8601#Durations))",
-      "`{prefix}config set thread_auto_close 3 days and 5 hours` (accepted readable time)"
-    ],
-    "notes": [
-      "To disable auto close, do `{prefix}config del thread_auto_close`.",
-      "To prevent a thread from auto-closing, do `{prefix}close cancel`.",
-      "See also: `thread_auto_close_silently`, `thread_auto_close_response`."
-    ]
-  },
-  "thread_cooldown": {
-    "default": "Never",
-    "description": "Specify the time required for the recipient to wait before allowed to create a new thread.",
-    "examples": [
-      "`{prefix}config set thread_cooldown P12DT3H` (stands for 12 days and 3 hours in [ISO-8601 Duration Format](https://en.wikipedia.org/wiki/ISO_8601#Durations))",
-      "`{prefix}config set thread_cooldown 3 days and 5 hours` (accepted readable time)"
-    ],
-    "notes": [
-      "To disable thread cooldown, do `{prefix}config del thread_cooldown`."
-    ]
-  },
-  "log_expiration": {
-    "default": "Never",
-    "description": "The duration closed threads will be stored within the database before deletion. Logs that have been closed for longer than this duration will be deleted automatically.",
-    "examples": [
-      "`{prefix}config set log_expiration P12DT3H` (stands for 12 days and 3 hours in [ISO-8601 Duration Format](https://en.wikipedia.org/wiki/ISO_8601#Durations))",
-      "`{prefix}config set log_expiration 3 days and 5 hours` (accepted readable time)"
-    ],
-    "notes": [
-      "To disable log expiration, do `{prefix}config del log_expiration`."
-    ]
-  },
-  "thread_cancelled": {
-    "default": "\"Cancelled\"",
-    "description": "This is the message to display when a thread times out and creation is cancelled.",
-    "examples": [
-      "`{prefix}config set thread_cancelled Gone.`"
-    ],
-    "notes": []
-  },
-  "thread_auto_close_response": {
-    "default": "\"This thread has been closed automatically due to inactivity after {{timeout}}.\"",
-    "description": "This is the message to display when the thread when the thread auto-closes.",
-    "examples": [
-      "`{prefix}config set thread_auto_close_response Your close message here.`"
-    ],
-    "notes": [
-      "Its possible to use `{{timeout}}` as a placeholder for a formatted timeout text.",
-      "This will not have an effect when `thread_auto_close_silently` is enabled.",
-      "Discord flavoured markdown is fully supported in `thread_auto_close_response`.",
-      "See also: `thread_auto_close`, `thread_auto_close_silently`."
-    ]
-  },
-  "thread_creation_response": {
-    "default": "\"The staff team will get back to you as soon as possible.\"",
-    "description": "This is the message embed content sent to the recipient upon the creation of a new thread.",
-    "examples": [
-      "`{prefix}config set thread_creation_response You will be contacted shortly.`"
-    ],
-    "notes": [
-      "Discord flavoured markdown is fully supported in `thread_creation_response`.",
-      "See also: `thread_creation_title`, `thread_creation_footer`, `thread_close_response`."
-    ]
-  },
-  "thread_creation_footer": {
-    "default": "\"Your message has been sent\"",
-    "description": "This is the message embed footer sent to the recipient upon the creation of a new thread.",
-    "examples": [
-      "`{prefix}config set thread_creation_footer Please Hold...`"
-    ],
-    "notes": [
-      "This is used in place of `thread_self_closable_creation_footer` when `recipient_thread_close` is enabled.",
-      "See also: `thread_creation_title`, `thread_creation_response`, `thread_self_closable_creation_footer`, `thread_close_footer`."
-    ]
-  },
-  "thread_contact_silently": {
-    "default": "No",
-    "description": "Setting this configuration will always open a new thread silently in contact.",
-    "examples": [
-      "`{prefix}config set thread_contact_silently yes`",
-      "`{prefix}config set thread_contact_silently no`"
-    ],
-    "notes": [
-      "Works like `{prefix}contact <user> silent` for every new thread."
-    ]
-  },
-  "thread_self_closable_creation_footer": {
-    "default": "\"Click the lock to close the thread\"",
-    "description": "This is the message embed footer sent to the recipient upon the creation of a new thread.",
-    "examples": [
-      "`{prefix}config set thread_self_closable_creation_footer Please Hold...`"
-    ],
-    "notes": [
-      "This is used in place of `thread_creation_footer` when `recipient_thread_close` is disabled.",
-      "See also: `thread_creation_title`, `thread_creation_response`, `thread_creation_footer`."
-    ]
-  },
-  "thread_creation_contact_title": {
-    "default": "\"New Thread\"",
-    "description": "This is the message embed title sent to recipients when contacted.",
-    "examples": [
-      "`{prefix}config set thread_creation_contact_title New Message!`"
-    ],
-    "notes": [
-      "See also: `thread_creation_self_contact_response`, `thread_creation_contact_response`."
-    ]
-  },
-  "thread_creation_self_contact_response": {
-    "default": "\"You have opened a Modmail thread.\"",
-    "description": "This is the message embed description sent to recipients when self-contacted.",
-    "examples": [
-      "`{prefix}config set thread_creation_self_contact_response You contacted yourself.`"
-    ],
-    "notes": [
-      "`thread_creation_contact_response` is used when contacted by another user.",
-      "See also: `thread_creation_contact_title`, `thread_creation_contact_response`."
-    ]
-  },
-  "thread_creation_contact_response": {
-    "default": "\"{{creator.name}} has opened a Modmail thread.\"",
-    "description": "This is the message embed description sent to recipients when contacted by a mod.",
-    "examples": [
-      "`{prefix}config set thread_creation_contact_response New thread opened.`"
-    ],
-    "notes": [
-      "You may use the `{{creator}}` variable for access to the [Member](https://discordpy.readthedocs.io/en/latest/api.html#discord.Member) that created the thread.",
-      "`thread_creation_self_contact_response` is used when contacted by self.",
-      "See also: `thread_creation_contact_title`, `thread_creation_self_contact_response`."
-    ]
-  },
-  "thread_creation_title": {
-    "default": "\"Thread Created\"",
-    "description": "This is the message embed title sent to the recipient upon the creation of a new thread.",
-    "examples": [
-      "`{prefix}config set thread_creation_title Hello!`"
-    ],
-    "notes": [
-      "See also: `thread_creation_response`, `thread_creation_footer`, `thread_close_title`."
-    ]
-  },
-  "thread_close_footer": {
-    "default": "\"Replying will create a new thread\"",
-    "description": "This is the message embed footer sent to the recipient upon the closure of a thread.",
-    "examples": [
-      "`{prefix}config set thread_close_footer Bye!`"
-    ],
-    "notes": [
-      "See also: `thread_close_title`, `thread_close_response`, `thread_creation_footer`."
-    ]
-  },
-  "thread_close_title": {
-    "default": "\"Thread Closed\"",
-    "description": "This is the message embed title sent to the recipient upon the closure of a thread.",
-    "examples": [
-      "`{prefix}config set thread_close_title Farewell!`"
-    ],
-    "notes": [
-      "See also: `thread_close_response`, `thread_close_footer`, `thread_creation_title`."
-    ]
-  },
-  "thread_close_response": {
-    "default": "\"{{closer.mention}} has closed this Modmail thread\"",
-    "description": "This is the message embed content sent to the recipient upon the closure of a thread.",
-    "examples": [
-      "`{prefix}config set thread_close_response Your message is appreciated!`"
-    ],
-    "notes": [
-      "When `recipient_thread_close` is enabled and the recipient closed their own thread, `thread_self_close_response` is used instead of this configuration.",
-      "You may use the `{{closer}}` variable for access to the [Member](https://discordpy.readthedocs.io/en/latest/api.html#discord.Member) that closed the thread.",
-      "`{{loglink}}` can be used as a placeholder substitute for the full URL linked to the thread in the log viewer and `{{loglink}}` for the unique key (ie. s3kf91a) of the log.",
-      "Discord flavoured markdown is fully supported in `thread_close_response`.",
-      "See also: `thread_close_title`, `thread_close_footer`, `thread_self_close_response`, `thread_creation_response`."
-    ]
-  },
-  "thread_self_close_response": {
-    "default": "\"You have closed this Modmail thread.\"",
-    "description": "This is the message embed content sent to the recipient upon the closure of a their own thread.",
-    "examples": [
-      "`{prefix}config set thread_self_close_response You have closed your own thread...`"
-    ],
-    "notes": [
-      "When `recipient_thread_close` is disabled or the thread wasn't closed by the recipient, `thread_close_response` is used instead of this configuration.",
-      "You may use the `{{closer}}` variable for access to the [Member](https://discordpy.readthedocs.io/en/latest/api.html#discord.Member) that closed the thread.",
-      "`{{loglink}}` can be used as a placeholder substitute for the full URL linked to the thread in the log viewer and `{{loglink}}` for the unique key (ie. s3kf91a) of the log.",
-      "Discord flavoured markdown is fully supported in `thread_self_close_response`.",
-      "See also: `thread_close_title`, `thread_close_footer`, `thread_close_response`."
-    ]
-  },
-  "thread_move_title": {
-    "default": "Thread Moved",
-    "description": "The title of the message embed when a thread is moved.",
-    "examples": [
-      "`{prefix}config set thread_move_title Thread transferred to another channel!`"
-    ],
-    "notes": [
-      "See also: `thread_move_notify`, `thread_move_notify_mods`, `thread_move_response`."
-    ]
-  },
-  "thread_move_notify": {
-    "default": "No",
-    "description": "Notify the recipient if the thread was moved.",
-    "examples": [
-      "`{prefix}config set thread_move_notify yes`",
-      "`{prefix}config set thread_move_notify no`"
-    ],
-    "notes": [
-      "See also: `thread_move_title`, `thread_move_response`, `thread_move_notify_mods`."
-    ]
-  },
-  "thread_move_notify_mods": {
-    "default": "No",
-    "description": "Notify mods again after the thread is moved",
-    "examples": [
-      "`{prefix}config set thread_move_notify_mods yes`",
-      "`{prefix}config set thread_move_notify_mods no`"
-    ],
-    "notes": [
-      "See also: `thread_move_title`, `thread_move_response`, `thread_move_notify`."
-    ]
-  },
-  "thread_move_response": {
-    "default": "This thread has been moved.",
-    "description": "This is the message to display to the user when the thread is moved.",
-    "examples": [
-      "`{prefix}config set thread_move_response This thread has been moved to another category for review!`"
-    ],
-    "notes": [
-      "Only has an effect when `thread_move_notify` is on.",
-      "See also: `thread_move_title`, `thread_move_notify`."
-    ]
-  },
-  "cooldown_thread_title": {
-    "default": "Message not sent!",
-    "description": "The title of the message embed when the user has a cooldown before creating a new thread.",
-    "examples": [
-      "`{prefix}config set cooldown_thread_title Error`"
-    ],
-    "notes": [
-      "Only has an effect when `thread_cooldown` is set",
-      "See also: `cooldown_thread_response`."
-    ]
-  },
-  "cooldown_thread_response": {
-    "default": "Your cooldown ends {delta}. Try contacting me then.",
-    "description": "The description of the message embed when the user has a cooldown before creating a new thread.",
-    "examples": [
-      "`{prefix}config set cooldown_thread_response Be patient! You are on cooldown, wait {delta} more.`"
-    ],
-    "notes": [
-      "Only has an effect when `thread_cooldown` is set",
-      "Must have a {delta} included which will be replaced with the duration of time.",
-      "See also: `cooldown_thread_title`."
-    ]
-  },
-  "disabled_new_thread_title": {
-    "default": "Not Delivered.",
-    "description": "The title of the message embed when Modmail new thread creation is disabled and user tries to create a new thread.",
-    "examples": [
-      "`{prefix}config set disabled_new_thread_title Closed`"
-    ],
-    "notes": [
-      "Only has an effect when `{prefix}disable` or `{prefix}disable all` is set.",
-      "See also: `disabled_new_thread_response`, `disabled_new_thread_footer`, `disabled_current_thread_title`."
-    ]
-  },
-  "disabled_new_thread_response": {
-    "default": "We are not accepting new threads.",
-    "description": "The body of the message embed when Modmail new thread creation is disabled and user tries to create a new thread.",
-    "examples": [
-      "`{prefix}config set disabled_new_thread_response Our working hours is between 8am - 6pm EST.`"
-    ],
-    "notes": [
-      "Only has an effect when `{prefix}disable` or `{prefix}disable all` is set.",
-      "See also: `disabled_new_thread_title`, `disabled_new_thread_footer`, `disabled_current_thread_response`."
-    ]
-  },
-  "disabled_new_thread_footer": {
-    "default": "Please try again later...",
-    "description": "The footer of the message embed when Modmail new thread creation is disabled and user tries to create a new thread.",
-    "examples": [
-      "`{prefix}config set disabled_new_thread_footer Contact us later`"
-    ],
-    "notes": [
-      "Only has an effect when `{prefix}disable` or `{prefix}disable all` is set.",
-      "See also: `disabled_new_thread_title`, `disabled_new_thread_response`, `disabled_current_thread_footer`."
-    ]
-  },
-  "disabled_current_thread_title": {
-    "default": "Not Delivered.",
-    "description": "The title of the message embed when Modmail DM is disabled and user DMs Modmail from existing thread.",
-    "examples": [
-      "`{prefix}config set disabled_current_thread_title Unavailable`"
-    ],
-    "notes": [
-      "Only has an effect when `{prefix}disable all` is set.",
-      "See also: `disabled_current_thread_response`, `disabled_current_thread_footer`, `disabled_new_thread_title`."
-    ]
-  },
-  "disabled_current_thread_response": {
-    "default": "We are not accepting any messages.",
-    "description": "The body of the message embed when Modmail DM is disabled and user DMs Modmail from existing thread.",
-    "examples": [
-      "`{prefix}config set disabled_current_thread_response On break right now.`"
-    ],
-    "notes": [
-      "Only has an effect when `{prefix}disable all` is set.",
-      "See also: `disabled_current_thread_title`, `disabled_current_thread_footer`, `disabled_new_thread_response`."
-    ]
-  },
-  "disabled_current_thread_footer": {
-    "default": "Please try again later...",
-    "description": "The footer of the message embed when Modmail DM is disabled and user DMs Modmail from existing thread.",
-    "examples": [
-      "`{prefix}config set disabled_current_thread_footer Message back!`"
-    ],
-    "notes": [
-      "Only has an effect when `{prefix}disable all` is set.",
-      "See also: `disabled_current_thread_title`, `disabled_current_thread_response`, `disabled_new_thread_footer`."
-    ]
-  },
-  "recipient_color": {
-    "default": "Discord Gold [#F1C40F](https://placehold.it/100/f1c40f?text=+)",
-    "description": "This is the color of the messages sent by the recipient, this applies to messages received in the thread channel.",
-    "examples": [
-      "`{prefix}config set recipient_color dark beige`",
-      "`{prefix}config set recipient_color cb7723`",
-      "`{prefix}config set recipient_color #cb7723`",
-      "`{prefix}config set recipient_color c4k`"
-    ],
-    "notes": [
-      "Available color names can be found on [Taki's Blog](https://taaku18.github.io/modmail/colors/).",
-      "See also: `mod_color`, `main_color`, `error_color`."
-    ],
-    "thumbnail": "https://placehold.it/100/f1c40f?text=+"
-  },
-  "mod_color": {
-    "default": "Discord Green [#2ECC71](https://placehold.it/100/2ecc71?text=+)",
-    "description": "This is the color of the messages sent by the moderators, this applies to messages within in the thread channel and the DM thread messages received by the recipient.",
-    "examples": [
-      "`{prefix}config set mod_color dark beige`",
-      "`{prefix}config set mod_color cb7723`",
-      "`{prefix}config set mod_color #cb7723`",
-      "`{prefix}config set mod_color c4k`"
-    ],
-    "notes": [
-      "Available color names can be found on [Taki's Blog](https://taaku18.github.io/modmail/colors/).",
-      "See also: `recipient_color`, `main_color`, `error_color`."
-    ],
-    "thumbnail": "https://placehold.it/100/2ecc71?text=+"
-  },
-  "mod_tag": {
-    "default": "The moderator's highest role",
-    "description": "This is the name tag in the “footer” section of the embeds sent by moderators in the recipient DM and thread channel.",
-    "examples": [
-      "`{prefix}config set mod_tag Moderator`"
-    ],
-    "notes": [
-      "When the message is sent anonymously, `anon_tag` is used instead.",
-      "See also: `anon_tag`."
-    ]
-  },
-  "anon_username": {
-    "default": "Fallback on `mod_tag`",
-    "description": "This is the name in the “author” section of the embeds sent by anonymous moderators in the recipient DM.",
-    "examples": [
-      "`{prefix}config set anon_username Incognito Mod`"
-    ],
-    "notes": [
-      "See also: `anon_avatar_url`, `anon_tag`."
-    ],
-    "image": "https://i.imgur.com/SKOC42Z.png"
-  },
-  "anon_avatar_url": {
-    "default": "Server avatar",
-    "description": "This is the avatar of the embeds sent by anonymous moderators in the recipient DM.",
-    "examples": [
-      "`{prefix}config set anon_avatar_url https://path.to/your/avatar.png` (you will need to upload the avatar to somewhere)"
-    ],
-    "notes": [
-      "See also: `anon_username`, `anon_tag`."
-    ],
-    "image": "https://i.imgur.com/SKOC42Z.png"
-  },
-  "anon_tag": {
-    "default": "\"Response\"",
-    "description": "This is the name tag in the “footer” section of the embeds sent by anonymous moderators in the recipient DM.",
-    "examples": [
-      "`{prefix}config set anon_tag Support Agent`"
-    ],
-    "notes": [
-      "See also: `anon_avatar_url`, `anon_username`, `mod_tag`."
-    ],
-    "image": "https://i.imgur.com/SKOC42Z.png"
-  },
-  "react_to_contact_message": {
-    "default": "None",
-    "description": "A message ID where reactions are tracked. If the `react_to_contact_emoji` is added, the bot opens a thread with them.",
-    "examples": [
-      "`{prefix}config set react_to_contact_message 773575608814534717`"
-    ],
-    "notes": [
-      "See also: `react_to_contact_emoji`"
-    ]
-  },
-  "react_to_contact_emoji": {
-    "default": "\u2705",
-    "description": "An emoji which is tracked in `react_to_contact_message`",
-    "examples": [
-      "`{prefix}config set react_to_contact_emoji \u2705`"
-    ],
-    "notes": [
-      "See also: `react_to_contact_message \u2705`"
-    ]
-  },
-  "transfer_reactions": {
-    "default": "Yes",
-    "description": "Transfer users reactions to mods and vice versa",
-    "examples":[
-      "`{prefix}config set transfer_reactions no`"
-    ],
-    "notes": []
-  },
-  "close_on_leave": {
-    "default": "No",
-    "description": "Closes a modmail thread upon user leave automatically",
-    "examples":[
-      "`{prefix}config set close_on_leave yes`"
-    ],
-    "notes": [
-      "See also: `close_on_leave_reason`."
-    ]
-  },
-  "close_on_leave_reason": {
-    "default": "The recipient has left the server.",
-    "description": "Reason for closing the thread once member leaves",
-    "examples":[
-      "`{prefix}config set close_on_leave_reason Member left`"
-    ],
-    "notes": [
-      "This has no effect unless `close_on_leave` is set.",
-      "See also: `close_on_leave`."
-    ]
-  },
-  "alert_on_mention": {
-    "default": "No",
-    "description": "Mentions all mods (mention) in mention channel when bot is mentioned",
-    "examples":[
-      "`{prefix}config set alert_on_mention yes`"
-    ],
-    "notes": [
-      "See also: `mention`, `mention_channel_id`"
-    ]
-  },
-  "silent_alert_on_mention": {
-    "default": "No",
-    "description": "Send a message in the mention channel without mentioning all mods (mention).",
-    "examples":[
-      "`{prefix}config set alert_on_mention yes`"
-    ],
-    "notes": [
-      "This has no effect unless `alert_on_mention` is set to yes.",
-      "See also: `mention`, `mention_channel_id`"
-    ]
-  },
-  "show_timestamp": {
-    "default": "Yes",
-    "description": "Shows timestamps on thread embeds",
-    "examples":[
-      "`{prefix}config set show_timestamp no`"
-    ],
-    "notes": []
-  },
-  "anonymous_snippets": {
-    "default": "No",
-    "description": "Sends snippets anonymously.",
-    "examples":[
-      "`{prefix}config set anonymous_snippets yes`"
-    ],
-    "notes": [
-      "See also: `anon_avatar_url`, `anon_tag`, `plain_snippets`."
-    ]
-  },
-  "plain_snippets": {
-    "default": "No",
-    "description": "Sends snippets with a plain interface.",
-    "examples":[
-      "`{prefix}config set plain_snippets yes`"
-    ],
-    "notes": [
-      "See also: `anonymous_snippets`."
-    ]
-  },
-  "require_close_reason": {
-    "default" : "No",
-    "description": "Require a reason to close threads.",
-    "examples": [
-      "`{prefix}config set require_close_reason yes`"
-    ],
-    "notes": []
-  },
-  "show_log_url_button": {
-    "default" : "No",
-    "description": "Shows the button to open the Log URL.",
-    "examples": [
-      "`{prefix}config set show_log_url_button yes`"
-    ],
-    "notes": []
-  },
-  "private_added_to_group_title": {
-    "default": "New Thread (Group)",
-    "description": "This is the message embed title sent to the recipient that is just added to a thread.",
-    "examples": [
-      "`{prefix}config set private_added_to_group_title Welcome to this new group thread!`"
-    ],
-    "notes": [
-      "The public_ variant is used when sending to other thread recipients.",
-      "See also: `private_added_to_group_description`, `public_added_to_group_title`"
-    ]
-  },
-  "private_added_to_group_response": {
-    "default": "\"{{moderator.name}} has added you to a Modmail thread.\"",
-    "description": "This is the message embed content sent to the recipient that is just added to a thread.",
-    "examples": [
-      "`{prefix}config set private_added_to_group_response Any message sent here will be sent to all other thread recipients.`"
-    ],
-    "notes": [
-      "You may use the `{{moderator}}` variable for access to the [Member](https://discordpy.readthedocs.io/en/latest/api.html#discord.Member) that added the user.",
-      "When anonadduser is used, `private_added_to_group_description_anon` is used instead.",
-      "The public_ variant is used when sending to other thread recipients.",
-      "See also: `private_added_to_group_title`, `public_added_to_group_description`"
-    ]
-  },
-  "private_added_to_group_description_anon": {
-    "default": "A moderator has added you to a Modmail thread.",
-    "description": "This is the message embed content sent to the recipient that is just added to a thread when adduser is used anonymously.",
-    "examples": [
-      "`{prefix}config set private_added_to_group_description_anon Any message sent here will be sent to all other thread recipients.`"
-    ],
-    "notes": [
-      "When adduser (no anon) is used, `private_added_to_group_description` is used instead.",
-      "The public_ variant is used when sending to other thread recipients.",
-      "See also: `private_added_to_group_title`, `public_added_to_group_description_anon`"
-    ]
-  },
-  "public_added_to_group_title": {
-    "default": "New User",
-    "description": "This is the message embed title sent to all other recipients when someone is added to the thread.",
-    "examples": [
-      "`{prefix}config set public_added_to_group_title Welcome to our new user!`"
-    ],
-    "notes": [
-      "The private_ variant is used when sending to the new user.",
-      "See also: `private_added_to_group_title`, `private_added_to_group_title`"
-    ]
-  },
-  "public_added_to_group_response": {
-    "default": "\"{{moderator.name}} has added {{users}} to the Modmail thread.\"",
-    "description": "This is the message embed content sent to all other recipients when someone is added to the thread.",
-    "examples": [
-      "`{prefix}config set public_added_to_group_description Welcome {users}!`"
-    ],
-    "notes": [
-      "You may use the `{{moderator}}` variable for access to the [Member](https://discordpy.readthedocs.io/en/latest/api.html#discord.Member) that added the user.",
-      "When anonadduser is used, `public_added_to_group_description_anon` is used instead.",
-      "The private_ variant is used when sending to the new user.",
-      "See also: `public_added_to_group_title`, `private_added_to_group_description`"
-    ]
-  },
-  "public_added_to_group_description_anon": {
-    "default": "\"A moderator has added {{users}} to the Modmail thread.\"",
-    "description": "This is the message embed content sent to all other recipients when someone is added to the thread when adduser is used anonymously.",
-    "examples": [
-      "`{prefix}config set public_added_to_group_description_anon Any message sent here will be sent to all other thread recipients.`"
-    ],
-    "notes": [
-      "When adduser (no anon) is used, `public_added_to_group_description` is used instead.",
-      "The private_ variant is used when sending to the new user.",
-      "See also: `public_added_to_group_title`, `private_added_to_group_description_anon`"
-    ]
-  },
-  "private_removed_from_group_title": {
-    "default": "Removed From Thread (Group)",
-    "description": "This is the message embed title sent to the recipient that is just removed from a thread.",
-    "examples": [
-      "`{prefix}config set private_removed_from_group_title Welcome to this new group thread!`"
-    ],
-    "notes": [
-      "The public_ variant is used when sending to other thread recipients.",
-      "See also: `private_removed_from_group_description`, `public_removed_from_group_title`"
-    ]
-  },
-  "private_removed_from_group_response": {
-    "default": "\"{{moderator.name}} has removed you from the Modmail thread.\"",
-    "description": "This is the message embed content sent to the recipient that is just removed from a thread.",
-    "examples": [
-      "`{prefix}config set private_removed_from_group_response Bye`"
-    ],
-    "notes": [
-      "You may use the `{{moderator}}` variable for access to the [Member](https://discordpy.readthedocs.io/en/latest/api.html#discord.Member) that added the user.",
-      "When anonremoveuser is used, `private_removed_from_group_description_anon` is used instead.",
-      "The public_ variant is used when sending to other thread recipients.",
-      "See also: `private_removed_from_group_title`, `public_removed_from_group_description`"
-    ]
-  },
-  "private_removed_from_group_description_anon": {
-    "default": "A moderator has removed you from the Modmail thread.",
-    "description": "This is the message embed content sent to the recipient that is just removed from a thread when removeuser is used anonymously.",
-    "examples": [
-      "`{prefix}config set private_removed_from_group_description_anon You are permenantly removed from this thread.`"
-    ],
-    "notes": [
-      "When adduser (no anon) is used, `private_removed_from_group_description` is used instead.",
-      "The public_ variant is used when sending to other thread recipients.",
-      "See also: `private_removed_from_group_title`, `public_removed_from_group_description_anon`"
-    ]
-  },
-  "public_removed_from_group_title": {
-    "default": "User Removed",
-    "description": "This is the message embed title sent to all other recipients when someone is removed from the thread.",
-    "examples": [
-      "`{prefix}config set public_removed_from_group_title User is now gone!`"
-    ],
-    "notes": [
-      "The private_ variant is used when sending to the new user.",
-      "See also: `private_removed_from_group_title`, `private_removed_from_group_title`"
-    ]
-  },
-  "public_removed_from_group_response": {
-    "default": "\"{{moderator.name}} has removed {{users}} from the Modmail thread.\"",
-    "description": "This is the message embed content sent to all other recipients when someone is removed from the thread.",
-    "examples": [
-      "`{prefix}config set public_removed_from_group_description Goodbye {users}!`"
-    ],
-    "notes": [
-      "You may use the `{{moderator}}` variable for access to the [Member](https://discordpy.readthedocs.io/en/latest/api.html#discord.Member) that added the user.",
-      "When anonremoveuser is used, `public_removed_from_group_description_anon` is used instead.",
-      "The private_ variant is used when sending to the new user.",
-      "See also: `public_removed_from_group_title`, `private_removed_from_group_description`"
-    ]
-  },
-  "public_removed_from_group_description_anon": {
-    "default": "\"A moderator has removed {{users}} from the Modmail thread.\"",
-    "description": "This is the message embed content sent to all other recipients when someone is removed from the thread when removeuser is used anonymously.",
-    "examples": [
-      "`{prefix}config set public_removed_from_group_description_anon Goodbye {users}!`"
-    ],
-    "notes": [
-      "When adduser (no anon) is used, `public_removed_from_group_description` is used instead.",
-      "The private_ variant is used when sending to the new user.",
-      "See also: `public_removed_from_group_title`, `private_removed_from_group_description_anon`"
-    ]
-  },
-  "confirm_thread_creation": {
-    "default": "No",
-    "description": "Ensure users confirm that they want to create a new thread",
-    "examples":[
-      "`{prefix}config set confirm_thread_creation yes`"
-    ],
-    "notes": [
-      "See also: `confirm_thread_creation_title`, `confirm_thread_response`, `confirm_thread_creation_accept`, `confirm_thread_creation_deny`"
-    ]
-  },
-  "confirm_thread_creation_title": {
-    "default": "Confirm thread creation",
-    "description": "Title for the embed message sent to users to confirm a thread creation",
-    "examples":[
-      "`{prefix}config set confirm_thread_creation_title Are you sure you want to create a new thread?`"
-    ],
-    "notes": [
-      "See also: `confirm_thread_creation`, `confirm_thread_response`, `confirm_thread_creation_accept`, `confirm_thread_creation_deny`"
-    ]
-  },
-  "confirm_thread_response": {
-    "default": "Click the button to confirm thread creation which will directly contact the moderators.",
-    "description": "Description for the embed message sent to users to confirm a thread creation",
-    "examples":[
-      "`{prefix}config set confirm_thread_response Click to confirm`"
-    ],
-    "notes": [
-      "See also: `confirm_thread_creation`, `confirm_thread_creation_title`, `confirm_thread_creation_accept`, `confirm_thread_creation_deny`"
-    ]
-  },
-  "confirm_thread_creation_accept": {
-    "default": "\u2705",
-    "description": "Emoji to accept a thread creation",
-    "examples":[
-      "`{prefix}config set confirm_thread_creation_accept \u2611`"
-    ],
-    "notes": [
-      "This has no effect unless `confirm_thread_creation` is set",
-      "See also: `confirm_thread_creation`, `confirm_thread_creation_title`, `confirm_thread_response`, `confirm_thread_creation_deny`"
-    ]
-  },
-  "confirm_thread_creation_deny": {
-    "default": "\uD83D\uDEAB",
-    "description": "Emoji to accept deny thread creation",
-    "examples":[
-      "`{prefix}config set confirm_thread_creation_deny \u26D4`"
-    ],
-    "notes": [
-      "This has no effect unless `confirm_thread_creation` is set",
-      "See also: `confirm_thread_creation`, `confirm_thread_creation_title`, `confirm_thread_response`, `confirm_thread_creation_accept`"
-    ]
-  },
-  "use_regex_autotrigger": {
-    "default": "No",
-    "description": "Whether to use regex to compare in autotriggers.",
-    "examples":[
-      "`{prefix}config set use_regex_autotrigger yes`"
-    ],
-    "notes": [
-      "This is meant for advanced user that understand regular expressions.",
-      "You can test it out with https://regexr.com on `PCRE (Server)` mode",
-      "See command: `autotrigger`"
-    ]
-  },
-  "modmail_guild_id": {
-    "default": "Fallback on `GUILD_ID`",
-    "description": "The ID of the discord server where the threads channels should be created (receiving server).",
-    "examples": [
-    ],
-    "notes": [
-      "This configuration can only to be set through `.env` file or environment (config) variables."
-    ]
-  },
-  "guild_id": {
-    "default": "None, required",
-    "description": "The ID of the discord server where recipient users reside (users server).",
-    "examples": [
-    ],
-    "notes": [
-      "This configuration can only to be set through `.env` file or environment (config) variables."
-    ]
-  },
-  "log_url": {
-    "default": "https://example.com/",
-    "description": "The base log viewer URL link, leave this as-is to not configure a log viewer.",
-    "examples": [
-    ],
-    "notes": [
-      "This configuration can only to be set through `.env` file or environment (config) variables."
-    ]
-  },
-  "log_url_prefix": {
-    "default": "`/logs`",
-    "description": "The path to your log viewer extending from your `LOG_URL`, set this to `/` to specify no extra path to the log viewer.",
-    "examples": [
-    ],
-    "notes": [
-      "This configuration can only to be set through `.env` file or environment (config) variables."
-    ]
-  },
-  "mongo_uri": {
-    "default": "None, required",
-    "description": "A MongoDB connection string.",
-    "examples": [
-    ],
-    "notes": [
-      "This configuration can only to be set through `.env` file or environment (config) variables."
-    ]
-  },
-  "owners": {
-    "default": "None, required",
-    "description": "A list of definite bot owners, use `{prefix}perms add level OWNER @user` to set flexible bot owners.",
-    "examples": [
-    ],
-    "notes": [
-      "This configuration can only to be set through `.env` file or environment (config) variables."
-    ]
-  },
-  "token": {
-    "default": "None, required",
-    "description": "Your bot token as found in the Discord Developer Portal.",
-    "examples": [
-    ],
-    "notes": [
-      "This configuration can only to be set through `.env` file or environment (config) variables."
-    ]
-  },
-  "log_level": {
-    "default": "INFO",
-    "description": "The logging level for logging to stdout.",
-    "examples": [
-    ],
-    "notes": [
-      "This configuration can only to be set through `.env` file or environment (config) variables."
-    ]
-  },
-  "stream_log_format": {
-    "default": "plain",
-    "description": "The logging format when through a stream, can be 'plain' or 'json'",
-    "examples": [
-    ],
-    "notes": [
-      "This configuration can only to be set through `.env` file or environment (config) variables."
-    ]
-  },
-  "file_log_format": {
-    "default": "plain",
-    "description": "The logging format when logging to a file, can be 'plain' or 'json'",
-    "examples": [
-    ],
-    "notes": [
-      "This configuration can only to be set through `.env` file or environment (config) variables."
-    ]
-  },
-  "discord_log_level": {
-    "default": "INFO",
-    "description": "The `discord.py` library logging level for logging to stdout.",
-    "examples": [
-    ],
-    "notes": [
-      "This configuration can only to be set through `.env` file or environment (config) variables."
-    ]
-  },
-  "enable_plugins": {
-    "default": "Yes",
-    "description": "Whether plugins should be enabled and loaded into Modmail.",
-    "examples": [
-    ],
-    "notes": [
-      "This configuration can only to be set through `.env` file or environment (config) variables."
-    ]
-  },
-  "data_collection": {
-    "default": "Yes",
-    "description": "Controls if bot metadata should be sent to the development team.",
-    "examples": [
-    ],
-    "notes": [
-      "This configuration can only to be set through `.env` file or environment (config) variables."
-    ]
-  },
-  "github_token": {
-    "default": "None, required for update functionality",
-    "description": "A github personal access token with the repo scope: https://github.com/settings/tokens.",
-    "examples": [
-    ],
-    "notes": [
-      "This configuration can only to be set through `.env` file or environment (config) variables."
-    ]
-  },
-  "disable_autoupdates": {
-    "default": "No",
-    "description": "Controls if autoupdates should be disabled or not.",
-    "examples": [
-    ],
-    "notes": [
-      "This configuration can only to be set through `.env` file or environment (config) variables."
-    ]
-  },
-  "disable_updates": {
-    "default": "No",
-    "description": "Controls if the update command should be disabled or not.",
-    "examples": [
-    ],
-    "notes": [
-      "This configuration can only to be set through `.env` file or environment (config) variables."
-    ]
-  },
-  "use_hoisted_top_role": {
-    "default": "Yes",
-    "description": "Controls if only hoisted roles are evaluated when finding top role.",
-    "examples": [
-    ],
-    "notes": [
-      "Top role is displayed in embeds when replying or adding/removing users to a thread in the case mod_tag and anon_username are not set.",
-      "If this configuration is enabled, only roles that are hoisted (displayed seperately in member list) will be used. If a user has no hoisted roles, it will return 'None'.",
-      "If you would like to display the top role of a user regardless of if it's hoisted or not, disable `use_hoisted_top_role`."
-    ]
-  },
-  "thread_min_characters": {
-    "default": "0",
-    "description": "The minimum number of characters required in the initial message to create a thread. Set to 0 to disable.",
-    "examples": [
-      "`{prefix}config set thread_min_characters 20`"
-    ],
-    "notes": [
-      "If a user tries to create a thread with a message shorter than this, an error will be shown.",
-      "See also: `thread_min_characters_title`, `thread_min_characters_response`, `thread_min_characters_footer`."
-    ]
-  },
-  "thread_min_characters_title": {
-    "default": "Message too short",
-    "description": "The title of the error embed when a user tries to create a thread with too few characters.",
-    "examples": [
-      "`{prefix}config set thread_min_characters_title Too short!`"
-    ],
-    "notes": [
-      "See also: `thread_min_characters`, `thread_min_characters_response`, `thread_min_characters_footer`."
-    ]
-  },
-  "thread_min_characters_response": {
-    "default": "Your message is too short to create a thread. Please provide more details.",
-    "description": "The description of the error embed when a user tries to create a thread with too few characters.",
-    "examples": [
-      "`{prefix}config set thread_min_characters_response Please write a longer message.`"
-    ],
-    "notes": [
-      "You can use `{min_characters}` as a placeholder for the minimum required characters.",
-      "See also: `thread_min_characters`, `thread_min_characters_title`, `thread_min_characters_footer`."
-    ]
-  },
-  "thread_min_characters_footer": {
-    "default": "Minimum {min_characters} characters required.",
-    "description": "The footer of the error embed when a user tries to create a thread with too few characters.",
-    "examples": [
-      "`{prefix}config set thread_min_characters_footer At least {min_characters} characters needed.`"
-    ],
-    "notes": [
-      "You can use `{min_characters}` as a placeholder for the minimum required characters.",
-      "See also: `thread_min_characters`, `thread_min_characters_title`, `thread_min_characters_response`."
-    ]
-  },
-  "max_snooze_time": {
-    "default": "604800 (7 days in seconds)",
-    "description": "The maximum duration in seconds that a thread can be snoozed. When a thread is snoozed, it is temporarily hidden until the user replies or a moderator unsnoozes it.",
-    "examples": [
-      "`{prefix}config set max_snooze_time 86400` (1 day)",
-      "`{prefix}config set max_snooze_time 1209600` (14 days)"
-    ],
-    "notes": [
-      "The value must be specified in seconds.",
-      "See also: `snooze_title`, `snooze_text`, `unsnooze_text`, `unsnooze_notify_channel`."
-    ]
-  },
-  "snooze_title": {
-    "default": "\"Thread Snoozed\"",
-    "description": "This is the message embed title sent when a thread is snoozed.",
-    "examples": [
-      "`{prefix}config set snooze_title Thread Paused`"
-    ],
-    "notes": [
-      "See also: `snooze_text`, `unsnooze_title`, `max_snooze_time`."
-    ]
-  },
-  "snooze_text": {
-    "default": "\"This thread has been snoozed. The channel will be restored when the user replies or a moderator unsnoozes it.\"",
-    "description": "This is the message embed content sent when a thread is snoozed.",
-    "examples": [
-      "`{prefix}config set snooze_text This conversation is on hold temporarily.`"
-    ],
-    "notes": [
-      "Discord flavoured markdown is fully supported in `snooze_text`.",
-      "See also: `snooze_title`, `unsnooze_text`, `max_snooze_time`."
-    ]
-  },
-  "unsnooze_text": {
-    "default": "\"This thread has been unsnoozed and restored.\"",
-    "description": "This is the message content sent when a thread is unsnoozed and restored.",
-    "examples": [
-      "`{prefix}config set unsnooze_text Thread has been reactivated.`"
-    ],
-    "notes": [
-      "Discord flavoured markdown is fully supported in `unsnooze_text`.",
-      "See also: `snooze_text`, `unsnooze_notify_channel`, `max_snooze_time`."
-    ]
-  },
-  "unsnooze_notify_channel": {
-    "default": "\"thread\"",
-    "description": "This is the channel where the unsnooze notification will be sent. Set to \"thread\" to send in the thread's own channel, or provide a specific channel ID.",
-    "examples": [
-      "`{prefix}config set unsnooze_notify_channel thread`",
-      "`{prefix}config set unsnooze_notify_channel 9234932582312` (9234932582312 is the channel ID)"
-    ],
-    "notes": [
-      "If set to \"thread\", the notification will be sent in the thread channel itself.",
-      "If set to a channel ID, the notification will be sent to that specific channel.",
-      "See also: `unsnooze_text`, `max_snooze_time`."
-    ]
-  }
-}
+import json
+import logging
+import os
+import re
+import sys
+import _string
+
+from difflib import get_close_matches
+from enum import IntEnum
+from logging import FileHandler, StreamHandler, Handler
+from logging.handlers import RotatingFileHandler
+from string import Formatter
+from typing import Dict, Optional
+
+import discord
+from discord.ext import commands
+
+
+try:
+    from colorama import Fore, Style
+except ImportError:
+    Fore = Style = type("Dummy", (object,), {"__getattr__": lambda self, item: ""})()
+
+
+if ".heroku" in os.environ.get("PYTHONHOME", ""):
+    # heroku
+    Fore = Style = type("Dummy", (object,), {"__getattr__": lambda self, item: ""})()
+
+
+class ModmailLogger(logging.Logger):
+    @staticmethod
+    def _debug_(*msgs):
+        return f'{Fore.CYAN}{" ".join(msgs)}{Style.RESET_ALL}'
+
+    @staticmethod
+    def _info_(*msgs):
+        return f'{Fore.LIGHTMAGENTA_EX}{" ".join(msgs)}{Style.RESET_ALL}'
+
+    @staticmethod
+    def _error_(*msgs):
+        return f'{Fore.RED}{" ".join(msgs)}{Style.RESET_ALL}'
+
+    def debug(self, msg, *args, **kwargs):
+        if self.isEnabledFor(logging.DEBUG):
+            self._log(logging.DEBUG, self._debug_(msg), args, **kwargs)
+
+    def info(self, msg, *args, **kwargs):
+        if self.isEnabledFor(logging.INFO):
+            self._log(logging.INFO, self._info_(msg), args, **kwargs)
+
+    def warning(self, msg, *args, **kwargs):
+        if self.isEnabledFor(logging.WARNING):
+            self._log(logging.WARNING, self._error_(msg), args, **kwargs)
+
+    def error(self, msg, *args, **kwargs):
+        if self.isEnabledFor(logging.ERROR):
+            self._log(logging.ERROR, self._error_(msg), args, **kwargs)
+
+    def critical(self, msg, *args, **kwargs):
+        if self.isEnabledFor(logging.CRITICAL):
+            self._log(logging.CRITICAL, self._error_(msg), args, **kwargs)
+
+    def line(self, level="info"):
+        if level == "info":
+            level = logging.INFO
+        elif level == "debug":
+            level = logging.DEBUG
+        else:
+            level = logging.INFO
+        if self.isEnabledFor(level):
+            self._log(
+                level,
+                Fore.BLACK + Style.BRIGHT + "-------------------------" + Style.RESET_ALL,
+                [],
+            )
+
+
+class JsonFormatter(logging.Formatter):
+    """
+    Formatter that outputs JSON strings after parsing the LogRecord.
+
+    Parameters
+    ----------
+    fmt_dict : Optional[Dict[str, str]]
+        {key: logging format attribute} pairs. Defaults to {"message": "message"}.
+    time_format: str
+        time.strftime() format string. Default: "%Y-%m-%dT%H:%M:%S"
+    msec_format: str
+        Microsecond formatting. Appended at the end. Default: "%s.%03dZ"
+    """
+
+    def __init__(
+        self,
+        fmt_dict: Optional[Dict[str, str]] = None,
+        time_format: str = "%Y-%m-%dT%H:%M:%S",
+        msec_format: str = "%s.%03dZ",
+    ):
+        self.fmt_dict: Dict[str, str] = fmt_dict if fmt_dict is not None else {"message": "message"}
+        self.default_time_format: str = time_format
+        self.default_msec_format: str = msec_format
+        self.datefmt: Optional[str] = None
+
+    def usesTime(self) -> bool:
+        """
+        Overwritten to look for the attribute in the format dict values instead of the fmt string.
+        """
+        return "asctime" in self.fmt_dict.values()
+
+    def formatMessage(self, record) -> Dict[str, str]:
+        """
+        Overwritten to return a dictionary of the relevant LogRecord attributes instead of a string.
+        KeyError is raised if an unknown attribute is provided in the fmt_dict.
+        """
+        return {fmt_key: record.__dict__[fmt_val] for fmt_key, fmt_val in self.fmt_dict.items()}
+
+    def format(self, record) -> str:
+        """
+        Mostly the same as the parent's class method, the difference being that a dict is manipulated and dumped as JSON
+        instead of a string.
+        """
+        record.message = record.getMessage()
+
+        if self.usesTime():
+            record.asctime = self.formatTime(record, self.datefmt)
+
+        message_dict = self.formatMessage(record)
+
+        if record.exc_info:
+            # Cache the traceback text to avoid converting it multiple times
+            # (it's constant anyway)
+            if not record.exc_text:
+                record.exc_text = self.formatException(record.exc_info)
+
+        if record.exc_text:
+            message_dict["exc_info"] = record.exc_text
+
+        if record.stack_info:
+            message_dict["stack_info"] = self.formatStack(record.stack_info)
+
+        return json.dumps(message_dict, default=str)
+
+
+class FileFormatter(logging.Formatter):
+    ansi_escape = re.compile(r"\x1B\[[0-?]*[ -/]*[@-~]")
+
+    def format(self, record):
+        record.msg = self.ansi_escape.sub("", record.msg)
+        return super().format(record)
+
+
+log_stream_formatter = logging.Formatter(
+    "%(asctime)s %(name)s[%(lineno)d] - %(levelname)s: %(message)s", datefmt="%m/%d/%y %H:%M:%S"
+)
+
+log_file_formatter = FileFormatter(
+    "%(asctime)s %(name)s[%(lineno)d] - %(levelname)s: %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+
+json_formatter = JsonFormatter(
+    {
+        "level": "levelname",
+        "message": "message",
+        "loggerName": "name",
+        "processName": "processName",
+        "processID": "process",
+        "threadName": "threadName",
+        "threadID": "thread",
+        "timestamp": "asctime",
+    }
+)
+
+
+def create_log_handler(
+    filename: Optional[str] = None,
+    *,
+    rotating: bool = False,
+    level: int = logging.DEBUG,
+    mode: str = "a+",
+    encoding: str = "utf-8",
+    format: str = "plain",
+    maxBytes: int = 28000000,
+    backupCount: int = 1,
+    **kwargs,
+) -> Handler:
+    """
+    Creates a pre-configured log handler. This function is made for consistency's sake with
+    pre-defined default values for parameters and formatters to pass to handler class.
+    Additional keyword arguments also can be specified, just in case.
+
+    Plugin developers should not use this and use `models.getLogger` instead.
+
+    Parameters
+    ----------
+    filename : Optional[Path]
+        Specifies that a `FileHandler` or `RotatingFileHandler` be created, using the specified filename,
+        rather than a `StreamHandler`. Defaults to `None`.
+    rotating : bool
+        Whether the file handler should be the `RotatingFileHandler`. Defaults to `False`. Note, this
+        argument only compatible if the `filename` is specified, otherwise `ValueError` will be raised.
+    level : int
+        The root logger level for the handler. Defaults to `logging.DEBUG`.
+    mode : str
+        If filename is specified, open the file in this mode. Defaults to 'a+'.
+    encoding : str
+        If this keyword argument is specified along with filename, its value is used when the `FileHandler` is created,
+        and thus used when opening the output file. Defaults to 'utf-8'.
+    format : str
+        The format to output with, can either be 'json' or 'plain'. Will apply to whichever handler is created,
+        based on other conditional logic.
+    maxBytes : int
+        The max file size before the rollover occurs. Defaults to 28000000 (28MB). Rollover occurs whenever the current
+        log file is nearly `maxBytes` in length; but if either of `maxBytes` or `backupCount` is zero,
+        rollover never occurs, so you generally want to set `backupCount` to at least 1.
+    backupCount : int
+        Max number of backup files. Defaults to 1. If this is set to zero, rollover will never occur.
+
+    Returns
+    -------
+    `StreamHandler` when `filename` is `None`, otherwise `FileHandler` or `RotatingFileHandler`
+    depending on the `rotating` value.
+    """
+    if filename is None and rotating:
+        raise ValueError("`filename` must be set to instantiate a `RotatingFileHandler`.")
+
+    if filename is None:
+        handler = StreamHandler(stream=sys.stdout, **kwargs)
+        formatter = log_stream_formatter
+    elif not rotating:
+        handler = FileHandler(filename, mode=mode, encoding=encoding, **kwargs)
+        formatter = log_file_formatter
+    else:
+        handler = RotatingFileHandler(
+            filename, mode=mode, encoding=encoding, maxBytes=maxBytes, backupCount=backupCount, **kwargs
+        )
+        formatter = log_file_formatter
+
+    if format == "json":
+        formatter = json_formatter
+
+    handler.setLevel(level)
+    handler.setFormatter(formatter)
+    return handler
+
+
+logging.setLoggerClass(ModmailLogger)
+log_level = logging.INFO
+loggers = set()
+
+ch = create_log_handler(level=log_level)
+ch_debug: Optional[RotatingFileHandler] = None
+
+
+def getLogger(name=None) -> ModmailLogger:
+    logger = logging.getLogger(name)
+    logger.setLevel(log_level)
+    logger.addHandler(ch)
+    if ch_debug is not None:
+        logger.addHandler(ch_debug)
+    loggers.add(logger)
+    return logger
+
+
+def configure_logging(bot) -> None:
+    global ch_debug, log_level, ch
+
+    stream_log_format, file_log_format = bot.config["stream_log_format"], bot.config["file_log_format"]
+    if stream_log_format == "json":
+        ch.setFormatter(json_formatter)
+
+    logger = getLogger(__name__)
+    level_text = bot.config["log_level"].upper()
+    logging_levels = {
+        "CRITICAL": logging.CRITICAL,
+        "ERROR": logging.ERROR,
+        "WARNING": logging.WARNING,
+        "INFO": logging.INFO,
+        "DEBUG": logging.DEBUG,
+    }
+    logger.line()
+
+    level = logging_levels.get(level_text)
+    if level is None:
+        level = bot.config.remove("log_level")
+        logger.warning("Invalid logging level set: %s.", level_text)
+        logger.warning("Using default logging level: %s.", level)
+        level = logging_levels[level]
+    else:
+        logger.info("Logging level: %s", level_text)
+    log_level = level
+
+    logger.info("Log file: %s", bot.log_file_path)
+    ch_debug = create_log_handler(bot.log_file_path, rotating=True)
+
+    if file_log_format == "json":
+        ch_debug.setFormatter(json_formatter)
+
+    ch.setLevel(log_level)
+
+    logger.info("Stream log format: %s", stream_log_format)
+    logger.info("File log format: %s", file_log_format)
+
+    for log in loggers:
+        log.setLevel(log_level)
+        log.addHandler(ch_debug)
+
+    # Set up discord.py logging
+    d_level_text = bot.config["discord_log_level"].upper()
+    d_level = logging_levels.get(d_level_text)
+    if d_level is None:
+        d_level = bot.config.remove("discord_log_level")
+        logger.warning("Invalid discord logging level set: %s.", d_level_text)
+        logger.warning("Using default discord logging level: %s.", d_level)
+        d_level = logging_levels[d_level]
+    d_logger = logging.getLogger("discord")
+    d_logger.setLevel(d_level)
+
+    non_verbose_log_level = max(d_level, logging.INFO)
+    stream_handler = create_log_handler(level=non_verbose_log_level)
+    if non_verbose_log_level != d_level:
+        logger.info("Discord logging level (stdout): %s.", logging.getLevelName(non_verbose_log_level))
+        logger.info("Discord logging level (logfile): %s.", logging.getLevelName(d_level))
+    else:
+        logger.info("Discord logging level: %s.", logging.getLevelName(d_level))
+    d_logger.addHandler(stream_handler)
+    d_logger.addHandler(ch_debug)
+
+    logger.debug("Successfully configured logging.")
+
+
+class InvalidConfigError(commands.BadArgument):
+    def __init__(self, msg, *args):
+        super().__init__(msg, *args)
+        self.msg = msg
+
+    @property
+    def embed(self):
+        # Single reference of Color.red()
+        return discord.Embed(title="Error", description=self.msg, color=discord.Color.red())
+
+
+class _Default:
+    pass
+
+
+Default = _Default()
+
+
+class SafeFormatter(Formatter):
+    def get_field(self, field_name, args, kwargs):
+        first, rest = _string.formatter_field_name_split(field_name)
+
+        try:
+            obj = self.get_value(first, args, kwargs)
+        except (IndexError, KeyError):
+            return "<Invalid>", first
+
+        # loop through the rest of the field_name, doing
+        #  getattr or getitem as needed
+        # stops when reaches the depth of 2 or starts with _.
+        try:
+            for n, (is_attr, i) in enumerate(rest):
+                if n >= 2:
+                    break
+                if is_attr:
+                    if str(i).startswith("_"):
+                        break
+                    obj = getattr(obj, i)
+                else:
+                    obj = obj[i]
+            else:
+                return obj, first
+        except (IndexError, KeyError):
+            pass
+        return "<Invalid>", first
+
+
+class UnseenFormatter(Formatter):
+    def get_value(self, key, args, kwds):
+        if isinstance(key, str):
+            try:
+                return kwds[key]
+            except KeyError:
+                return "{" + key + "}"
+        else:
+            return super().get_value(key, args, kwds)
+
+
+class SimilarCategoryConverter(commands.CategoryChannelConverter):
+    async def convert(self, ctx, argument):
+        bot = ctx.bot
+        guild = ctx.guild
+
+        try:
+            return await super().convert(ctx, argument)
+        except commands.ChannelNotFound:
+            if guild:
+                categories = {c.name.casefold(): c for c in guild.categories}
+            else:
+                categories = {
+                    c.name.casefold(): c
+                    for c in bot.get_all_channels()
+                    if isinstance(c, discord.CategoryChannel)
+                }
+
+            result = get_close_matches(argument.casefold(), categories.keys(), n=1, cutoff=0.75)
+            if result:
+                result = categories[result[0]]
+
+            if not isinstance(result, discord.CategoryChannel):
+                raise commands.ChannelNotFound(argument)
+
+        return result
+
+
+class DummyMessage:
+    """
+    A class mimicking the original :class:discord.Message
+    where all functions that require an actual message to exist
+    is replaced with a dummy function
+    """
+
+    def __init__(self, message):
+        if message:
+            message.attachments = []
+        self._message = message
+
+    def __getattr__(self, name: str):
+        return getattr(self._message, name)
+
+    def __bool__(self):
+        return bool(self._message)
+
+    async def delete(self, *, delay=None):
+        return
+
+    async def edit(self, **fields):
+        return
+
+    async def add_reaction(self, emoji):
+        return
+
+    async def remove_reaction(self, emoji):
+        return
+
+    async def clear_reaction(self, emoji):
+        return
+
+    async def clear_reactions(self):
+        return
+
+    async def pin(self, *, reason=None):
+        return
+
+    async def unpin(self, *, reason=None):
+        return
+
+    async def publish(self):
+        return
+
+    async def ack(self):
+        return
+
+
+class PermissionLevel(IntEnum):
+    OWNER = 5
+    ADMINISTRATOR = 4
+    ADMIN = 4
+    MODERATOR = 3
+    MOD = 3
+    SUPPORTER = 2
+    RESPONDER = 2
+    REGULAR = 1
+    INVALID = -1
+
+
+class DMDisabled(IntEnum):
+    NONE = 0
+    NEW_THREADS = 1
+    ALL_THREADS = 2
+
+
+class HostingMethod(IntEnum):
+    HEROKU = 0
+    PM2 = 1
+    SYSTEMD = 2
+    SCREEN = 3
+    DOCKER = 4
+    OTHER = 5
