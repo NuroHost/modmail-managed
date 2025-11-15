@@ -54,8 +54,7 @@ handle_status() {
     else
         kill_running_command
         if [ "$status" = "suspended" ]; then
-            echo "Service is suspended. Exiting monitor."
-            exit 0
+            echo "Service is suspended. Command stopped. Continuing to monitor..."
         elif [ -z "$status" ]; then
             echo "Warning: Could not determine service status."
         else
